@@ -1,0 +1,9 @@
+requests
+feedparser
+openai
+beautifulsoup4
+discord.py
+yfinance
+googlenewsdecoder
+datetime
+playwright
