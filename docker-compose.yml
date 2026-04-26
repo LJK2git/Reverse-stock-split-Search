@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  searcher:
+    container_name: searcher
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./:/app
