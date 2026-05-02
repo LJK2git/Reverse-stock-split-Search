@@ -10,6 +10,7 @@ WORKDIR /app
 
 # Install system dependencies + Playwright system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
     libglib2.0-0 \
     libnss3 \
     libatk1.0-0 \
@@ -32,12 +33,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-# Copy requirements and install the rest
-COPY requirements.txt .
+
+RUN git clone https://github.com/LJK2git/Reverse-stock-split-Search.git .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN playwright install chromium
 # Copy the rest of the project files
-COPY . .
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 
 # Run the script
-CMD ["python", "searcher.py"]
+CMD ["/entrypoint.sh"]
