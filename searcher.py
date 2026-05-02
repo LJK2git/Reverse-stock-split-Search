@@ -518,7 +518,6 @@ async def check_article_for_roundup(item):
     # If still no text → give up early
     if not text:
         log(f"[ROUNDUP] ERROR: Both fetch methods failed for URL: {item}")
-        processed.add(item)
         return False
 
     # ---------------- RAW TEXT (no cleaning) ---------------- #
@@ -541,7 +540,6 @@ async def check_article_for_roundup(item):
         else:
             if SPAM:
                 log(f"[ROUNDUP] Blocked phrase detected: {item}")
-            processed.add(item)
         return True
 
     # ---------------- KEYWORD SEARCH ---------------- #
@@ -916,6 +914,7 @@ async def process_rss_feed():
                             if ticker_upper not in reported_tickers:
                                 await check_sec_for_fractional(ticker_upper)
                                 #print(f"LINKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK {item}")
+                                processed.add(item)
                         else:
                             # This catches empty strings or weirdly long text that escaped the filter
                             if ticker_upper:
@@ -1016,6 +1015,7 @@ async def testplaywright(ctx):
 
 @bot.command(name="search")
 async def search(ctx, *, inputs):
+    global user_req
     user_req = True
     inputs_list = [i.strip() for i in inputs.split(",") if i.strip()]
     keywords = load_file_lines(KEYWORDS_FILE)
